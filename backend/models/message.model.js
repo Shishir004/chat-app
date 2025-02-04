@@ -1,21 +1,24 @@
-const mongoose=require('mongoose');
-const messageSchema=new mongoose.Schema({
-    SenderId:{
-        type:mongoose.Schema.Types.ObjectId,
-        ref:"User",
-        required:true
+const mongoose = require("mongoose");
+
+const messageSchema = new mongoose.Schema({
+    senderId: {  // ✅ Fixed capitalization
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+        required: true
     },
-    reciverId:{
-        type:mongoose.Schema.Types.ObjectId,
-        ref:"User",
-        required:true
+    receiverId: {  // ✅ Fixed spelling from "reciverId" to "receiverId"
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+        required: true
     },
-    text:{
-        type:String
+    text: {
+        type: String,
+        required: true  // ✅ Make sure messages always have text
     },
-    image:{
-        type:String
+    image: {
+        type: String
     }
-},{timestamps:true});
-const Message=mongoose.model("Message",messageSchema);
-module.exports=Message;
+}, { timestamps: true });
+
+const Message = mongoose.model("Message", messageSchema);
+module.exports = Message;
