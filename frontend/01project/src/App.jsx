@@ -14,8 +14,9 @@ import "react-toastify/dist/ReactToastify.css";
 import { useThemeStore } from './store/useThemeStore.js'
 import { THEMES } from './constants/index.js' 
 function App() {
-  const {authUser,checkAuth,isCheckingAuth}=useAuthStore();
+  const {authUser,checkAuth,isCheckingAuth,onlineUsers}=useAuthStore();
   const {theme}=useThemeStore();
+  console.log(onlineUsers);
   useEffect(()=>{
     checkAuth();
   },

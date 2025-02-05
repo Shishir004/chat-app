@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useChatStore } from '../store/useChatStore';
 import SidebarSkeleton from './SidebarSkeleton';
 import { Users } from 'lucide-react';
@@ -7,11 +7,11 @@ import { useAuthStore } from '../store/useAuthStore';
 const Sidebar = () => {
     const { getUsers, selectedUser, users, setSelectedUser, isUserLoading } = useChatStore();
     const { onlineUsers } = useAuthStore();
-
+    const [showOnlineOnly, setShowOnlineOnly] = useState(false);
     useEffect(() => {
         getUsers();
     }, []);
-
+    const filteredUsers = showOnlineOnly ? users.filter((user) => onlineUsers.includes(user._id)) : users;
     useEffect(() => {
         console.log("Users fetched:", users);
     }, [users]);
@@ -31,18 +31,29 @@ const Sidebar = () => {
                     <Users className="size-6" />
                     <span className="font-medium hidden lg:block">Contacts</span>
                 </div>
+                <div className="mt-3 hidden lg:flex items-center gap-2">
+                    <label className="cursor-pointer flex items-center gap-2">
+                        <input
+                            type="checkbox"
+                            checked={showOnlineOnly}
+                            onChange={(e) => setShowOnlineOnly(e.target.checked)}
+                            className="checkbox checkbox-sm"
+                        />
+                        <span className="text-sm">Show online only</span>
+                    </label>
+                    <span className="text-xs text-zinc-500">({onlineUsers.length - 1} online)</span>
+                </div>
             </div>
             <div className="overflow-y-auto w-full py-3">
-                {users.map((user) => (
+                {filteredUsers.map((user) => (
                     <button
                         key={user._id}
                         onClick={() => {
-                          console.log("User Selected:", user);
-                          setSelectedUser(user); // Force state change
-                      }}
-                        className={`w-full p-3 flex items-center gap-3 hover:bg-base-300 transition-colors ${
-                            selectedUser?._id === user._id ? 'bg-base-300 ring-1 ring-base-300' : ''
-                        }`}
+                            console.log("User Selected:", user);
+                            setSelectedUser(user); // Force state change
+                        }}
+                        className={`w-full p-3 flex items-center gap-3 hover:bg-base-300 transition-colors ${selectedUser?._id === user._id ? 'bg-base-300 ring-1 ring-base-300' : ''
+                            }`}
                     >
                         <div className="relative mx-auto lg:mx-0">
                             <img
