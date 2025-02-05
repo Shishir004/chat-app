@@ -7,7 +7,7 @@ const dbconnection =require('../lib/db');
 const cookieParser=require('cookie-parser');
 require('dotenv').config();
 dbconnection();
-const port=process.env.PORT
+const port=process.env.PORT || 3000;
 const __dirname=path.resolve();
 const {app,server}=require('../lib/socket');
 
